@@ -1,6 +1,6 @@
-# 🚀 Day 01 — Python Fundamentals + DSA Journey
+#  Day 01 — Python Fundamentals + DSA Journey
 
-## 📚 What I Learned Today
+##  What I Learned Today
 
 Today I focused on understanding core Python fundamentals and basic DSA problem-solving concepts.
 
@@ -8,7 +8,7 @@ Instead of blindly copying code, I practiced understanding the logic line-by-lin
 
 ---
 
-# 🐍 Python Fundamentals Covered
+# Python Fundamentals Covered
 
 ## ✅ Variables & Data Types
 
@@ -186,7 +186,7 @@ Daily focus:
 
 ---
 
-# 🚀 Next Plan
+# Next Plan
 
 * Improve Python fluency
 * Practice more DSA patterns

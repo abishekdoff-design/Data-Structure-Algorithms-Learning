@@ -179,7 +179,7 @@ Daily focus:
 # 📈 Current Progress
 
 ✔ Learned core Python basics
-✔ Built first mini project
+✔ Built mini project
 ✔ Practiced debugging
 ✔ Solved LeetCode problems
 ✔ Started daily GitHub consistency journey

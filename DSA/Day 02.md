@@ -1,4 +1,4 @@
-# 📘 DSA Day 02 — Best Time to Buy and Sell Stock
+# DSA Day 02 — Best Time to Buy and Sell Stock
 
 ## 🔹 Problem
 

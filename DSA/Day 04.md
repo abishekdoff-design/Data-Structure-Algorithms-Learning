@@ -1,6 +1,6 @@
 
 
-# Day 3: LeetCode 217 - Contains Duplicate
+# Day 4: LeetCode 217 - Contains Duplicate
 
 ## Problem Statement
 

@@ -136,7 +136,8 @@ Example: [6,7,0,1,2,3,4] with mid = 3 (nums[mid] = 1). nums[mid] < nums[left] me
 
 ## Implementation
 
-pythonclass Solution:
+```python
+class Solution:
     def findMin(self, nums):
         result = nums[0]
         left, right = 0, len(nums) - 1

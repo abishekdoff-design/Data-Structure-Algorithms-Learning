@@ -100,20 +100,22 @@ Product DP requires two states because sign can flip direction. Always snapshot 
 
 **Pattern:** DP with dual extremes — useful for negative numbers, sign changes, and continuous product problems.
 
-Day 6 – LeetCode 153: Find Minimum in Rotated Sorted Array
-Problem
+## 153: Find Minimum in Rotated Sorted Array
+
+## Problem
+
 A sorted ascending array gets rotated between 1 and n times. Find the minimum element in O(log n).
 pythonnums = [4,5,6,7,0,1,2]
 # Output: 0
 The original order was [0,1,2,4,5,6,7]. Rotation moved the minimum away from index 0.
 
-Key Observation
+## Key Observation
 A rotated sorted array always contains two sorted halves with a break between them:
 [4, 5, 6, 7 | 0, 1, 2]
  left half      right half
 The minimum sits at that break. Binary search finds it by checking which half is sorted at each step, then discarding the sorted half (it can't contain the minimum).
 
-Algorithm
+## Algorithm
 Initialize search boundaries and a running minimum:
 pythonleft, right = 0, len(nums) - 1
 result = nums[0]
@@ -132,7 +134,8 @@ pythonelse:
     right = mid - 1
 Example: [6,7,0,1,2,3,4] with mid = 3 (nums[mid] = 1). nums[mid] < nums[left] means the minimum is somewhere in [left..mid]. Discard the right half.
 
-Implementation
+## Implementation
+
 pythonclass Solution:
     def findMin(self, nums):
         result = nums[0]
@@ -153,14 +156,14 @@ pythonclass Solution:
 
         return result
 
-Complexity
+## Complexity
 ComplexityReasonTimeO(log n)Search space halves each iterationSpaceO(1)Four scalar variables, no extra structures
 
-Mistakes Made
+## Mistakes Made
 Used min(nums) first. Correct answer, wrong complexity — O(n). The problem requires O(log n), so linear scan fails the constraint.
 Confused which half to discard. The instinct was to chase the smaller numbers visually. The actual rule: identify the sorted half and discard it, because the minimum can only live at a discontinuity.
 
-Takeaways
+## Takeaways
 
 nums[mid] >= nums[left] means the left half is clean — discard it.
 nums[mid] < nums[left] means the break is between left and mid — discard the right half.

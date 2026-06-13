@@ -1,4 +1,4 @@
-# Day 5 - Maximum Subarray (LeetCode 53)
+# Maximum Subarray (LeetCode 53)
 
 ## Problem Statement
 Given an integer array `nums`, find the contiguous subarray with the largest sum and return its sum.

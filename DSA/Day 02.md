@@ -20,7 +20,7 @@ Goal:
 
 ---
 
-# 🧠 Core Logic Learned
+# Core Logic Learned
 
 This problem is based on:
 
@@ -32,7 +32,7 @@ Instead of checking every buy/sell pair using nested loops, we optimize using a 
 
 ---
 
-# ⚡ Important Formula
+# Important Formula
 
 Profit Formula:
 
@@ -51,7 +51,7 @@ Profit:
 
 ---
 
-# 🔥 Key DSA Pattern
+# Key DSA Pattern
 
 ## Running Minimum Tracking
 
@@ -141,7 +141,7 @@ Efficient solution.
 
 ---
 
-# 💾 Space Complexity
+#  Space Complexity
 
 Only few variables used.
 
@@ -150,7 +150,7 @@ O(1)
 
 ---
 
-# 🐞 Debugging Learned
+# Debugging Learned
 
 ## Errors Faced
 
@@ -222,7 +222,7 @@ Today I learned:
 
 ---
 
-# 📈 Progress
+#  Progress
 
 ✔ Solved LeetCode 121
 ✔ Understood optimal solution

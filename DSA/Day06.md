@@ -100,41 +100,80 @@ Product DP requires two states because sign can flip direction. Always snapshot 
 
 **Pattern:** DP with dual extremes — useful for negative numbers, sign changes, and continuous product problems.
 
-## 153: Find Minimum in Rotated Sorted Array
+# Day 6 – LeetCode 153: Find Minimum in Rotated Sorted Array
 
-## Problem
+## Problem Statement
 
-A sorted ascending array gets rotated between 1 and n times. Find the minimum element in O(log n).
-pythonnums = [4,5,6,7,0,1,2]
+Given an ascending sorted array rotated between `1` and `n` times, find the minimum element in `O(log n)`.
+
+```python
+nums = [4,5,6,7,0,1,2]
 # Output: 0
-The original order was [0,1,2,4,5,6,7]. Rotation moved the minimum away from index 0.
+```
 
-## Key Observation
-A rotated sorted array always contains two sorted halves with a break between them:
+The original order was `[0,1,2,4,5,6,7]`. Rotation shifts the smallest value away from index 0.
+
+---
+
+## Core Observation
+
+A rotated sorted array always splits into two sorted halves:
+
+```text
 [4, 5, 6, 7 | 0, 1, 2]
- left half      right half
-The minimum sits at that break. Binary search finds it by checking which half is sorted at each step, then discarding the sorted half (it can't contain the minimum).
+ left sorted   right sorted
+```
+
+The minimum sits at the rotation boundary. Binary search locates that boundary by checking which half is sorted at every step.
+
+---
 
 ## Algorithm
-Initialize search boundaries and a running minimum:
-pythonleft, right = 0, len(nums) - 1
+
+Initialize search bounds and a running minimum:
+
+```python
+left, right = 0, len(nums) - 1
 result = nums[0]
-At each step, compute mid and handle three cases.
-Case 1 — current range is already sorted:
-pythonif nums[left] < nums[right]:
+```
+
+Loop until the bounds cross:
+
+```python
+while left <= right:
+```
+
+**Step 1 — Early exit if the range is already sorted:**
+
+```python
+if nums[left] < nums[right]:
     result = min(result, nums[left])
     break
-No rotation in this window. The minimum is nums[left].
-Case 2 — left half is sorted, minimum is in the right half:
-pythonif nums[mid] >= nums[left]:
-    left = mid + 1
-Example: [4,5,6,7,0,1,2] with mid = 3 (nums[mid] = 7). Left half [4,5,6,7] is sorted — all values exceed the rotation point. Discard it.
-Case 3 — mid is less than nums[left], so the rotation sits between left and mid:
-pythonelse:
-    right = mid - 1
-Example: [6,7,0,1,2,3,4] with mid = 3 (nums[mid] = 1). nums[mid] < nums[left] means the minimum is somewhere in [left..mid]. Discard the right half.
+```
 
-## Implementation
+No rotation in this range. The leftmost value is the smallest.
+
+**Step 2 — Compute mid and update result:**
+
+```python
+mid = (left + right) // 2
+result = min(result, nums[mid])
+```
+
+**Step 3 — Determine which half contains the rotation point:**
+
+```python
+if nums[mid] >= nums[left]:
+    # Left half [left..mid] is sorted → minimum is in the right half
+    left = mid + 1
+else:
+    # Right half [mid..right] has the dip → minimum is in the left half
+    right = mid - 1
+```
+
+---
+
+## Full Implementation
 
 ```python
 class Solution:
@@ -156,17 +195,42 @@ class Solution:
                 right = mid - 1
 
         return result
+```
+
+---
 
 ## Complexity
-ComplexityReasonTimeO(log n)Search space halves each iterationSpaceO(1)Four scalar variables, no extra structures
 
-## Mistakes Made
-Used min(nums) first. Correct answer, wrong complexity — O(n). The problem requires O(log n), so linear scan fails the constraint.
-Confused which half to discard. The instinct was to chase the smaller numbers visually. The actual rule: identify the sorted half and discard it, because the minimum can only live at a discontinuity.
+| | |
+|---|---|
+| Time | `O(log n)` — search space halves each iteration |
+| Space | `O(1)` — only `left`, `right`, `mid`, `result` |
 
-## Takeaways
+---
 
-nums[mid] >= nums[left] means the left half is clean — discard it.
-nums[mid] < nums[left] means the break is between left and mid — discard the right half.
-nums[left] < nums[right] means the whole window is sorted — take nums[left] and stop.
-Binary search works on conditions, not only exact values. This problem searches for the rotation point, not a specific number.
+## What Tripped Me Up
+
+**1. `min(nums)` is wrong for this problem**
+It gives the right answer but runs in `O(n)`. The constraint requires `O(log n)`, so binary search is mandatory.
+
+**2. Getting the direction wrong after finding the sorted half**
+
+When `nums[mid] >= nums[left]`, the left half is sorted — meaning the minimum is *not* there. Move `left = mid + 1` to search the right half.
+
+When `nums[mid] < nums[left]`, the right half is sorted — the rotation point (and minimum) is somewhere in `[left..mid]`. Move `right = mid - 1`.
+
+Getting this backwards sends the search the wrong direction.
+
+**3. Binary search doesn't have to find a value**
+
+Here it locates a *condition* — the index where the array wraps. Any time a problem asks for a boundary or inflection point in sorted/partially-sorted data, binary search is a candidate.
+
+---
+
+## Key Takeaways
+
+- A rotated sorted array always has at least one sorted half — use that to eliminate half the search space.
+- If the current range is already sorted, `nums[left]` is the minimum candidate. Stop early.
+- Track `result` across iterations rather than returning `nums[mid]` directly, since the true minimum might sit at a boundary you've already passed.
+
+**Pattern:** Binary Search on Rotated Sorted Arrays — applies to minimum/maximum in modified sorted structures, rotation count problems, and search-in-rotated-array variants (LC 33, 154).

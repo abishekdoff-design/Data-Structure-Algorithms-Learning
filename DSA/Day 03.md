@@ -1,4 +1,4 @@
-# DSA Day 03 — LeetCode 88: Merge Sorted Array
+# LeetCode 88: Merge Sorted Array
 
 ## Problem Overview
 

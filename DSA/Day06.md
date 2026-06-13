@@ -100,7 +100,7 @@ Product DP requires two states because sign can flip direction. Always snapshot 
 
 **Pattern:** DP with dual extremes — useful for negative numbers, sign changes, and continuous product problems.
 
-## 153: Find Minimum in Rotated Sorted Array
+# 153: Find Minimum in Rotated Sorted Array
 
 ## Problem Statement
 

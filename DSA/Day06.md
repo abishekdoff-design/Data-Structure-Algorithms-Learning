@@ -234,3 +234,120 @@ Here it locates a *condition* — the index where the array wraps. Any time a pr
 - Track `result` across iterations rather than returning `nums[mid]` directly, since the true minimum might sit at a boundary you've already passed.
 
 **Pattern:** Binary Search on Rotated Sorted Arrays — applies to minimum/maximum in modified sorted structures, rotation count problems, and search-in-rotated-array variants (LC 33, 154).
+
+
+# 33: Search in Rotated Sorted Array
+
+## Problem
+
+Given a rotated sorted array of distinct integers and a target value, return its index or `-1`.
+
+```python
+nums = [4,5,6,7,0,1,2], target = 0
+# Output: 4
+```
+
+**Constraint:** O(log n) time.
+
+---
+
+## Core Insight
+
+A rotated sorted array always has one sorted half at every binary search step.
+
+```text
+[4, 5, 6, 7, 0, 1, 2]
+ └── sorted ──┘ └─ sorted ─┘
+```
+
+Identify which half is sorted, check if the target falls in it, then discard the other half.
+
+---
+
+## Algorithm
+
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+
+        while left <= right:
+            mid = (left + right) // 2
+
+            if nums[mid] == target:
+                return mid
+
+            # Left half is sorted
+            if nums[left] <= nums[mid]:
+                if nums[left] <= target < nums[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+
+            # Right half is sorted
+            else:
+                if nums[mid] < target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+
+        return -1
+```
+
+---
+
+## Sorted Half Identification
+
+**Left half sorted** — `nums[left] <= nums[mid]`:
+
+```text
+[4, 5, 6, 7, 0, 1, 2]
+ ^        ^
+left     mid     ← left portion is normal
+```
+
+Target in range `[nums[left], nums[mid])`? Move `right = mid - 1`. Otherwise, `left = mid + 1`.
+
+**Right half sorted** — everything else:
+
+Target in range `(nums[mid], nums[right]]`? Move `left = mid + 1`. Otherwise, `right = mid - 1`.
+
+---
+
+## Complexity
+
+| | Complexity | Reason |
+|---|---|---|
+| Time | O(log n) | Half the search space discarded each step |
+| Space | O(1) | Three integer variables: `left`, `right`, `mid` |
+
+---
+
+## Bugs I Hit
+
+**Wrong pointer direction:**
+```python
+# Wrong
+right = mid + 1  # expands search instead of shrinking it
+
+# Correct
+right = mid - 1
+```
+
+**Off-by-one in range check:**
+
+The conditions use strict `<` on one side to avoid double-counting `mid`:
+```python
+nums[left] <= target < nums[mid]   # left sorted
+nums[mid] < target <= nums[right]  # right sorted
+```
+
+Getting this wrong sends the pointer into the unsorted half.
+
+---
+
+## Takeaways
+
+- Rotated arrays retain enough order to run binary search — you just check which half is sorted first.
+- The boundary conditions (`<=` vs `<`) matter. One wrong comparison breaks the partition logic.
+- Same sorted-half trick applies to LC 153 (find minimum) and rotation-point problems.

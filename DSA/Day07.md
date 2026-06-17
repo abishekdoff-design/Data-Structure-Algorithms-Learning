@@ -118,3 +118,129 @@ class Solution:
 ## Pattern: Sort + Two Pointer + Duplicate Skip
 
 Applies to: 2Sum variants, 3Sum, 4Sum, closest-sum problems, pair-search problems.
+
+
+
+
+# 11: Container With Most Water
+
+## Problem Statement
+
+Given an integer array `height`, where `height[i]` represents the height of a vertical line, find two lines that together with the x-axis form a container that stores the maximum amount of water.
+
+The container cannot be tilted.
+
+**Example:**
+
+```python
+height = [1,8,6,2,5,4,8,3,7]
+# Output: 49
+```
+
+---
+
+## Core Idea: Two Pointer + Greedy Elimination
+
+Brute force checks every pair: `O(n^2)`.
+Two pointers start at the widest possible container — index 0 and index n-1 — then shrink inward, discarding one side per step instead of checking all pairs.
+
+---
+
+## Why Move the Smaller Height Pointer
+
+Area is bounded by the shorter of the two lines, since water spills over the lower wall
+
+Proof that discarding the shorter pointer loses nothing:
+
+Suppose `height[left] < height[right]`. Any container that still uses `left` paired with some other index `k` (where `k < right`) has width `≤ right - left`, and height `≤ height[left]` (since `left` is still the constraint, or worse). So no pairing of `left` with anything inside the current window can beat what's already been computed. `left` is safe to discard.
+
+This is what makes the elimination greedy and exhaustive — every discarded pointer position is provably suboptimal, not just heuristically unlikely.
+
+---
+
+## Algorithm
+left = 0
+
+right = len(height) - 1
+
+maximum_area = 0
+while left < right:
+
+width = right - left
+
+container_height = min(height[left], height[right])
+
+area = width * container_height
+
+maximum_area = max(maximum_area, area)
+
+---
+
+## Implementation
+
+```python
+class Solution:
+    def maxArea(self, height: list[int]) -> int:
+        left = 0
+        right = len(height) - 1
+        maximum_area = 0
+
+        while left < right:
+            width = right - left
+            container_height = min(height[left], height[right])
+            area = width * container_height
+            maximum_area = max(maximum_area, area)
+
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+
+        return maximum_area
+```
+
+Verified against: `[1,8,6,2,5,4,8,3,7] -> 49`, `[4,3,2,1,4] -> 16`, `[1,2,1] -> 2`, `[2,3,4,5,18,17,6] -> 17`, `[1,1] -> 1`.
+
+---
+
+## Complexity
+
+| | Complexity | Reason |
+|---|---|---|
+| Time | O(n) | `left` and `right` each move at most n times total before crossing |
+| Space | O(1) | Only scalar variables, no auxiliary structures |
+
+---
+
+## Mistakes I Made
+
+**1. Assumed the taller line mattered more.**
+
+The shorter line caps the water level regardless of how tall the other side is. Moving the taller pointer can never increase the effective height — it can only shrink width.
+
+**2. Moved pointers without justifying the discard.**
+
+It's not enough to say "move the shorter one" — the reason it's safe is that the shorter pointer, paired with anything still inside the window, is bounded by a width strictly less than the current one and a height no greater than the current minimum. So it can't produce a better result than what's already been recorded.
+
+**3. Defaulted to brute force first.**
+
+`O(n^2)` checks every pair explicitly. The two-pointer approach replaces explicit checking with a per-step elimination proof, cutting this to `O(n)`.
+
+---
+
+## Takeaways
+
+- Two-pointer technique applies when a value is bounded by two endpoints moving toward each other.
+- A greedy step is only valid if you can prove the discarded option is dominated, not just assume it.
+- Identify the limiting factor in the formula before deciding what to optimize.
+- Going from `O(n^2)` to `O(n)` here came from eliminating provably suboptimal pairs, not from a heuristic shortcut.
+
+---
+
+## Pattern: Two Pointer + Greedy Elimination
+
+Applies to:
+
+- Container / boundary-area problems
+- Pair-comparison problems on sorted or static arrays
+- Maximum/minimum range problems bounded by two endpoints
